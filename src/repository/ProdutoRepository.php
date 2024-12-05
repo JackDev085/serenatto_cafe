@@ -41,6 +41,12 @@ class ProdutoRepository{
     return $result_query;
   }
 
+  public function excludeProduct(int $id): string{
+    $sql = "delete from produtos where id = ?";
+    $statement = $this -> pdo -> prepare( $sql);
+    $statement -> bindParam(1,$id)
+    return "sucess";
+  }
 
 
   

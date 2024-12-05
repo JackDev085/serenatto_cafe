@@ -56,7 +56,8 @@
           <td><?= $product ->getPreco()?></td>
           <td><a class="botao-editar" href="editar-produto.html">Editar</a></td>
           <td>
-            <form>
+            <form action="excluir-produto.php" method="POST">
+              <input name="tirar" type="hidden" value="<?php echo $product -> getID(); ?>">
               <input type="submit" class="botao-excluir" value="Excluir">
             </form>
           </td>
