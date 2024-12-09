@@ -21,7 +21,9 @@ class Produto{
   public function getId(): int{
     return $this->id;
   }
-
+  public function setImagem($imagem){
+    $this->imagem = $imagem;
+  }
   public function getTipo(): string{
     return $this->tipo;
   }

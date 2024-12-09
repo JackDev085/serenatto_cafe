@@ -88,16 +88,27 @@ class ProdutoRepository{
     $produto = $this -> formarObjeto($product);
     return $produto;
   }
+  private function atualizarFoto(Produto $produto)
+    {
+        $sql = "UPDATE produtos SET imagem = ? WHERE id = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $produto->getImagem());
+        $statement->bindValue(2, $produto->getId());
+        $statement->execute();
+    }
 
   public function updateOne($produto){
-    $sql = "update produtos set tipo=?, nome=?,descricao=?,preco=?,imagem=? where id=?";
+    $sql = "update produtos set tipo=?, nome=?,descricao=?,preco=?,where id=?";
     $statement = $this -> pdo ->prepare($sql);
     $statement -> bindValue(1,$produto->getTipo());
     $statement -> bindValue(2,$produto->getNome());
     $statement -> bindValue(3,$produto->getDescricao());
     $statement -> bindValue(4,$produto->getPrecoFormatado());
-    $statement -> bindValue(5,$produto->getImagem());
-    $statement -> bindValue(6, $produto->getId());
+    $statement -> bindValue(5, $produto->getId());
+    if($produto->getImagem() !== 'logo-serenatto.png'){
+            
+      $this->atualizarFoto($produto);
+  }
     $statement -> execute();
     return $statement;
 

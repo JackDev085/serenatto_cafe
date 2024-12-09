@@ -15,7 +15,10 @@ if (isset($_POST["editar"])&& !empty($_POST["editar"])){
   $_POST["preco"],
   $_POST["imagem"]
 );
-
+if($_FILES['imagem']['error'] == UPLOAD_ERR_OK){
+  $produto-> setImagem(uniqid().$_FILES["imagem"]["name"]);
+  move_uploaded_file($_FILES["imagem"]["tmp_name"],$produto->getImagemDiretorio());
+}
 $produto = $repository->updateOne($produto_edicao);
 header("Location:admin.php");
 }else{
@@ -51,9 +54,9 @@ header("Location:admin.php");
     <h1>Editar Produto</h1>
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
-  <section class="container-form">
+  <section class="container-form" enctype="multipart/form-data">
     <form action="#" method="post">
-      <input type="text" id="nome" name="id" value="<?php echo $product->getId()?>" hidden>
+      <input type="text" id="id" name="id" value="<?php echo $product->getId()?>" hidden>
       <label for="nome">Nome</label>
       <input type="text" id="nome" name="nome" value="<?php echo $product->getNome()?>" placeholder="Digite o nome do produto" required>
 
