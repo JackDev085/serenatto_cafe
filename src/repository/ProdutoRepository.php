@@ -41,13 +41,67 @@ class ProdutoRepository{
     return $result_query;
   }
 
-  public function excludeProduct(int $id): string{
+  public function excludeProduct(int $id){
     $sql = "delete from produtos where id = ?";
     $statement = $this -> pdo -> prepare( $sql);
-    $statement -> bindParam(1,$id)
-    return "sucess";
+    $statement -> bindParam(1,$id);
+    $statement -> execute();
+  }
+
+  public function salvar(Produto $produto){
+    $sql = "insert into produtos (tipo,nome,descricao,preco,imagem) values (?,?,?,?,?)";
+    $statement = $this -> pdo -> prepare( $sql);
+    $statement -> bindValue(1,$produto->getTipo());
+    $statement -> bindValue(2,$produto->getNome());
+    $statement -> bindValue(3,$produto->getDescricao());
+    $statement -> bindValue(4,$produto->getPreco());
+    $statement -> bindValue(5,$produto->getImagem());
+    $statement -> execute();
   }
 
 
+
+
+
+
+
+
+
+
+  public function formarObjeto($product){
+    $produto = new Produto(
+      $product["id"],
+      $product["tipo"],
+      $product["descricao"],
+      $product["nome"],
+      $product["preco"],
+      $product["imagem"]
+    );
+    return $produto;
+  }
+  public function buscaUm(int $id){
+    $sql = "SELECT * FROM produtos where id =?";
+    $statement = $this -> pdo -> prepare( $sql );
+    $statement -> bindParam(1,$id);
+    $statement -> execute();
+    $product = $statement -> fetch(PDO::FETCH_ASSOC);
+    $produto = $this -> formarObjeto($product);
+    return $produto;
+  }
+
+  public function updateOne($produto){
+    $sql = "update produtos set tipo=?, nome=?,descricao=?,preco=?,imagem=? where id=?";
+    $statement = $this -> pdo ->prepare($sql);
+    $statement -> bindValue(1,$produto->getTipo());
+    $statement -> bindValue(2,$produto->getNome());
+    $statement -> bindValue(3,$produto->getDescricao());
+    $statement -> bindValue(4,$produto->getPrecoFormatado());
+    $statement -> bindValue(5,$produto->getImagem());
+    $statement -> bindValue(6, $produto->getId());
+    $statement -> execute();
+    return $statement;
+
+
+  } 
   
 }

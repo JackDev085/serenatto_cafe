@@ -2,14 +2,14 @@
 
 class Produto{
 
-  private int $id;
+  private ?int $id;
   private string $tipo;
   private string $descricao;
   private string $nome;
   private float $preco;
   private string $imagem;
 
-  public function __construct(int $id, string $tipo, string $descricao, string $nome, $preco, string $imagem){
+  public function __construct(?int $id,string $tipo, string $descricao, string $nome, float $preco, string $imagem ="logo-serenatto.png"){
     $this->id = $id;
     $this->tipo = $tipo;
     $this->descricao = $descricao;
@@ -36,7 +36,7 @@ class Produto{
     return $this->preco;
   }
   public function getPrecoFormatado(): string{
-    return number_format($this-> preco,2);
+    return (float)number_format($this-> preco,2);
 
   }
 

@@ -1,3 +1,31 @@
+<?php
+
+require "src/conexao_db.php";
+require "src/model/Produto.php";
+require "src/repository/ProdutoRepository.php";
+
+$repository = new ProdutoRepository($pdo);
+
+if (isset($_POST["editar"])&& !empty($_POST["editar"])){
+  $produto_edicao = new Produto(
+  $_POST["id"],
+  $_POST["tipo"],
+  $_POST["descricao"],
+  $_POST["nome"],
+  $_POST["preco"],
+  $_POST["imagem"]
+);
+
+$produto = $repository->updateOne($produto_edicao);
+header("Location:admin.php");
+}else{
+  $product = $repository->buscaUm($_GET["id"]);
+}
+
+
+
+
+?>
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -24,30 +52,30 @@
     <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
   </section>
   <section class="container-form">
-    <form action="#">
-
+    <form action="#" method="post">
+      <input type="text" id="nome" name="id" value="<?php echo $product->getId()?>" hidden>
       <label for="nome">Nome</label>
-      <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
+      <input type="text" id="nome" name="nome" value="<?php echo $product->getNome()?>" placeholder="Digite o nome do produto" required>
 
       <div class="container-radio">
         <div>
             <label for="cafe">Café</label>
-            <input type="radio" id="cafe" name="tipo" value="Café" checked>
+            <input type="radio" id="cafe" name="tipo" value="Café" <?php echo $product-> getTipo()=="Café"? "checked":""?>>
         </div>
         <div>
             <label for="almoco">Almoço</label>
-            <input type="radio" id="almoco" name="tipo" value="Almoço">
+            <input type="radio" id="almoco" name="tipo" value="Almoço" <?php echo $product-> getTipo()=="Almoço"? "checked":""?>>
         </div>
     </div>
 
       <label for="descricao">Descrição</label>
-      <input type="text" id="descricao" name="descricao" placeholder="Digite uma descrição" required>
+      <input type="text" id="descricao" value="<?php echo $product ->getDescricao()?>" name="descricao" placeholder="Digite uma descrição" required>
 
       <label for="preco">Preço</label>
-      <input type="text" id="preco" name="preco" placeholder="Digite uma descrição" required>
+      <input type="text" id="preco" value="<?php echo number_format($product-> getPreco(),2)?>" name="preco" placeholder="Digite uma descrição" required>
 
       <label for="imagem">Envie uma imagem do produto</label>
-      <input type="file" name="imagem" accept="image/*" id="imagem" placeholder="Envie uma imagem">
+      <input type="file" name="imagem" accept="image/*" value="<?php echo $product -> getImagem()?>" id="imagem" placeholder="Envie uma imagem">
 
       <input type="submit" name="editar" class="botao-cadastrar"  value="Editar produto"/>
     </form>

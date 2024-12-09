@@ -49,28 +49,29 @@
       </thead>
       <tbody>
       <?php foreach($all_products as $product):?>
+
         <tr>
           <td><?= $product ->getNome()?></td>
           <td><?= $product ->getTipo()?></td>
           <td><?= $product ->getDescricao()?></td>
           <td><?= $product ->getPreco()?></td>
-          <td><a class="botao-editar" href="editar-produto.html">Editar</a></td>
+          <td><a class="botao-editar" href="editar-produto.php?id=<?php echo $product->getId()?>">Editar</a></td>
           <td>
-            <form action="excluir-produto.php" method="POST">
-              <input name="tirar" type="hidden" value="<?php echo $product -> getID(); ?>">
-              <input type="submit" class="botao-excluir" value="Excluir">
+            <form action="excluir-produto.php" method="post">
+              <input name="tirar" type="hidden" value="<?php echo $product -> getID();?>">
+              <button type="submit" class="botao-excluir" value="excluir">excluir</button>
             </form>
           </td>
         </tr>
       <?php endforeach;?>
-
       </tbody>
     </table>
-  <a class="botao-cadastrar" href="cadastrar-produto.html">Cadastrar produto</a>
-  <form action="#" method="post">
+  <a class="botao-cadastrar" href="cadastrar-produto.php">Cadastrar produto</a>
+  <form action="´#" method="post">
     <input type="submit" class="botao-cadastrar" value="Baixar Relatório"/>
   </form>
   </section>
+
 </main>
 </body>
 </html>
